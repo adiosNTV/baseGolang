@@ -15,6 +15,6 @@ go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 
 run app:
 ```
-go run /cmd/api/main.go
+go run ./cmd/api/main.go
 ```
 

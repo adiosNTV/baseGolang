@@ -1,0 +1,54 @@
+name: techstore
+
+services:
+  backend:
+    build: .
+    networks:
+      local-network:
+        aliases:
+          - backend
+    ports:
+      - '3000:3000'
+    depends_on:
+      database:
+        condition: service_started
+
+  database:
+    image: mysql:latest
+    restart: always
+    networks:
+      local-network:
+        aliases:
+          - database
+    environment:
+      MYSQL_USER: techstore
+      MYSQL_ROOT_PASSWORD: supasupasecured
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: TechStoreDb
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test: ["CMD", "mysql", "-u", "techstore", "-p123456"]
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  migrate:
+    image: migrate/migrate
+    networks:
+      - local-network
+    volumes:
+      - ./db/migrations:/migrations
+    command: ["-path", "/migrations", "-database",  "mysql://techstore:123456@tcp(database)/TechStoreDb", "up"]
+    links:
+      [database, backend]
+    depends_on:
+      database:
+        condition: service_healthy
+
+
+
+volumes:
+  mysql_data:
+
+networks:
+  local-network:

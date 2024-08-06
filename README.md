@@ -1,20 +1,20 @@
 
 # Base Golang Project
 
-A Simple golang project base
+A Simple Golang project base
 
 
 
 
 ## How to run
     
-install sqlc:
+install SQLC:
 ```bash
 go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 ```
 
 run app:
 ```
-go run ./cmd/api/main.go
+go run ./cmd/api
 ```
 
